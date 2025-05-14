@@ -1,5 +1,5 @@
 % Setup document for double sided A4 paper
-\documentclass[11pt,a4paper,twoside,openright]{report}
+\documentclass[11pt,a4paper,twoside,openright]{article}
 \usepackage[a4paper,left=3.5cm, right=2.5cm, top=3.5cm, bottom=3.5cm]{geometry}
 
 % Setup image path
@@ -40,9 +40,16 @@
 \begin{document}
 \titlep
 
-\input{chapters/firmware.tex}
+\input{chapters/intro.tex}
 
+\input{chapters/software.tex}
+\input{chapters/firmware.tex}
+\input{chapters/hardware.tex}
+
+\pagebreak
+\thispagestyle{empty}
 \begin{picture}(0,0)(0,26)
   \hspace*{-10em}\includegraphics[width=\paperwidth]{covers/back_fiiw_bruges_eng.pdf}
-\end{picture}%
+\end{picture}
+
 \end{document}
