@@ -1,0 +1,116 @@
+% Title page only configuration from the original FIIW thesis template
+\makeatletter
+
+% Required packages
+\usepackage{color}
+\usepackage{parallel}
+\usepackage{textpos}
+\usepackage{csquotes}
+\usepackage{graphicx}
+\usepackage{ifthen}
+
+% Metadata commands
+\def\title#1{\gdef\@title{#1}}
+\def\subtitle#1{\gdef\@subtitle{#1}}
+\def\forenameA#1{\gdef\@forenameA{#1}}
+\def\surnameA#1{\gdef\@surnameA{#1}}
+\def\forenameB#1{\gdef\@forenameB{#1}}
+\def\surnameB#1{\gdef\@surnameB{#1}}
+\def\forenameC#1{\gdef\@forenameC{#1}}
+\def\surnameC#1{\gdef\@surnameC{#1}}
+\def\opleiding#1{\gdef\@opleiding{#1}}
+\def\afdeling#1{\gdef\@afdeling{#1}}
+\def\academicyear#1{\gdef\@academicyear{#1}}
+\def\campus#1{\gdef\@campus{#1}}
+\def\promotorA[#1]#2{\gdef\@promotorAtype{#1}\gdef\@promotorAname{#2}}
+\def\promotorB[#1]#2{\gdef\@promotorBtype{#1}\gdef\@promotorBname{#2}}
+\def\promotorC[#1]#2{\gdef\@promotorCtype{#1}\gdef\@promotorCname{#2}}
+\def\embargo#1{\gdef\@embargo{#1}}
+
+% Default metadata
+\def\@title{Title}
+\def\@subtitle{}
+\def\@forenameA{}
+\def\@surnameA{}
+\def\@forenameB{}
+\def\@surnameB{}
+\def\@forenameC{}
+\def\@surnameC{}
+\def\@opleiding{}
+\def\@afdeling{}
+\def\@academicyear{}
+\def\@campus{}
+\def\@promotorAtype{}
+\def\@promotorAname{}
+\def\@promotorBtype{}
+\def\@promotorBname{}
+\def\@promotorCtype{}
+\def\@promotorCname{}
+\def\@embargo{}
+
+% Academic year printer
+\newcommand{\printAcademicYear}{Academic year \@academicyear}
+
+% Title page color
+\definecolor{titlegreen}{RGB}{29,141,176}
+
+% Title page definition
+\def\titlep{%
+  \thispagestyle{empty}%
+  \setlength{\unitlength}{1cm}%
+
+  % Cover image
+  \begin{picture}(0,0)(0,26)
+    \hspace*{-10em}\includegraphics[width=\paperwidth]{covers/cover_fiiw_bruges_eng.pdf}
+  \end{picture}%
+
+  \vfill
+  {\fontsize{42pt}{36pt}\selectfont\textcolor{titlegreen}{\textsf{\@title}}}\par
+  {\large\textsf{\@subtitle}}\par
+  \vfill
+
+  % Author names
+  \begin{flushright}
+    \textsf{\LARGE\textbf{\@forenameA~\MakeUppercase{\@surnameA}}}\\[1ex]
+    \ifx\@forenameB\@empty\else
+      \textsf{\LARGE\textbf{\@forenameB~\MakeUppercase{\@surnameB}}}
+    \fi
+		\ifx\@forenameC\@empty\else
+      \\[1ex]\textsf{\LARGE\textbf{\@forenameC~\MakeUppercase{\@surnameC}}}
+    \fi
+  \end{flushright}%
+
+  \vspace{10em}
+
+  % Promotors list
+  \begin{Parallel}{0.48\textwidth}{0.52\textwidth}
+    \ParallelLText{%
+      \noindent\large\begin{list}{label}{%
+        \setlength{\leftmargin}{7em}%
+        \setlength{\labelsep}{0.5em}%
+        \setlength{\labelwidth}{8em}%
+        \setlength{\itemsep}{-.5ex}%
+      }
+        \ifx \@promotorAname \@empty\else
+          \item[\@promotorAtype:\hfill] \@promotorAname
+        \fi
+        \ifx \@promotorBname \@empty\else
+          \item[\@promotorBtype:\hfill] \@promotorBname
+        \fi
+        \ifx \@promotorCname \@empty\else
+          \item[\@promotorCtype:\hfill] \@promotorCname
+        \fi
+      \end{list}
+    }
+    \ParallelRText{\noindent}
+  \end{Parallel}%
+
+  % Academic year
+  \begin{flushright}
+    \printAcademicYear
+  \end{flushright}%
+
+  \cleardoublepage
+}
+
+\makeatother

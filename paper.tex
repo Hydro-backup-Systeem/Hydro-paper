@@ -1,0 +1,48 @@
+% Setup document for double sided A4 paper
+\documentclass[11pt,a4paper,twoside,openright]{report}
+\usepackage[a4paper,left=3.5cm, right=2.5cm, top=3.5cm, bottom=3.5cm]{geometry}
+
+% Setup image path
+\usepackage{graphicx}
+\graphicspath{{./images}}
+
+\usepackage{ifthen}
+\usepackage{amsmath}
+\usepackage{pdfpages}
+
+\usepackage{cmbright}                 % Setup font
+\usepackage{listings}                 % For displaying of source code
+\usepackage{hyperref}			            % To make PDF navigatable
+\usepackage[small,bf,hang]{caption}   % To improve captions
+
+\usepackage{style/fiiw}
+
+\title{Low-energy communication backup system for hydrogen racecar}
+\subtitle{}
+
+\forenameA{Jarno}
+\surnameA{Mechele}
+
+\forenameB{Joey}
+\surnameB{De Smet}
+
+\forenameC{Robijn}
+\surnameC{Ameye}
+
+\opleiding{Industriële wetenschappen}
+\afdeling{Elektronica-ICT}
+
+\academicyear{2024--2025}
+\campus{brugeseng}
+\promotorA[Begeleider]{Sammy Verslype}
+\promotorB[Begeleider]{Anton Lintermans}
+
+\begin{document}
+\titlep
+
+\input{chapters/firmware.tex}
+
+\begin{picture}(0,0)(0,26)
+  \hspace*{-10em}\includegraphics[width=\paperwidth]{covers/back_fiiw_bruges_eng.pdf}
+\end{picture}%
+\end{document}
