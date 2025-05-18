@@ -2,3 +2,9 @@
 
 <!-- PDF_PREVIEW_START -->
 <!-- PDF_PREVIEW_END -->
+
+## Authors
+
+- Jarno Mechele
+- Joey De Smet
+- Robijn Ameye
