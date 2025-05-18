@@ -1,6 +1,7 @@
 # Paper for Low-energy backup communication system for hydrogen racecar
 
 <!-- PDF_PREVIEW_START -->
+![Page](docs/pdf-images/page-1.png)
 <!-- PDF_PREVIEW_END -->
 
 ## Authors
