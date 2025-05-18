@@ -114,14 +114,7 @@ geeft probleemstelling,Aanpak,methode,Belangrijkste resultaten,Conclusies en imp
 \keywords{Low power, Long-range wireless, Embedded systems}
 
 \section{Introduction}
-% TODO: Write introduction, maby we should merge this with System overview ?
-In a race with hydrogen cars, it is important for the pitwall to maintain communication with the car on track.
-At the pitwall, there must be continuous monitoring of the car's condition and speech communication with the driver.
-This is crucial for the course of the race.
-As a result, a backup communication system is required in case the primary system fails.
-This paper proposes a low-power, long-range wireless solution capable of transmitting and receiving both sensor data and voice signals.
-The required range of the system is determined by the size of the Le Mans circuit in France, which is approximately 2 km in diameter.
-This distance therefore defines the minimum communication range needed. 
+In hydrogen-powerd endurance racing, uninterupted telmetry and communication between the pitwall and the car are essential for both competitive performance and for driver safety. As system could fail due to multiple reasons, and cause a loss of communication costing laps or even endager lives, ad dedicated low-power backup is required. This paper therefor proposes a sub-miliwatt, long-range wireless solution capable of transmitting and receiving both critiacal sensor data and messages to the driver over distances up to 2km (the approximate diameter of the Le Mans circuit). By combining a encrypted LoRa-based RF link with embedded speech synthesis en WAV playback on an ultra-low-power STM32U5 microcontroller, our design ensures that even in the event of primary-system failure, the pit-crew retains awareness of the car's most critical data and issue instruction to the driver.
 
 \input{chapters/firmware}
 \input{chapters/software}

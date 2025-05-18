@@ -16,7 +16,7 @@ As seen on Figure-\ref{fig:firmware-system}, the architecture is organized into 
 
 \paragraph{LoRa Communiction Group}
 
-This group consists of four different tasks: \textit{Receive}, \textit{Send}, \textit{IRQ Handling} and \textit{Cleanup}. The Recieve task blocks on a semaphore that will be set when the IRQ handling task get interupted by the sx1276-module~\cite{sx1276}, to notfiy receive/transmit completion.
+This group consists of four different tasks: \textit{Receive}, \textit{Send}, \textit{IRQ Handling} and \textit{Cleanup}. The Recieve task blocks on a semaphore that will be set when the IRQ handling task get interupted by the sx1276-module~\cite{sx1276}, to notfiy (rx/tx)-completion. 
 
 
 \paragraph{Sensor Management Group}
@@ -24,6 +24,7 @@ This group consists of four different tasks: \textit{Receive}, \textit{Send}, \t
 \paragraph{Audio Processing Group}
 
 \paragraph{Power and Memory Management}
+
 
 % What i want to say:
 %  - Heap-5 memory section in upper region of ram -> making disabling of ram blocks more straight forward
