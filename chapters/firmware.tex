@@ -1,39 +1,58 @@
 \section{Firmware Design and Implementation}
 
-This section presents the firmware development for the STM32U5-microcontroller~\cite{stm32u5}, which forms the core of the low-energy backup communication system.
-The firmware is responsible for real-time handling of LoRa communication, sensor data processing, and voice output via speech synthesis or WAV file playback. 
-To achieve real-time performance, the firmware is built on FreeRTOS~\cite{freertos}, as illustraded in Figure-\ref{fig:firmware-system}. This enables clear separation of tasks with different priorities, making development more structured and maintainable.
+This section describes the firmware developed for the STM32U5 microcontroller~\cite{stm32u5}, which forms the core of our low-energy backup communication system. It handles real-time LoRa communication, sensor data acquisistion, and voice output via speech synthesis or WAV playback. To guarantee deterministic timing, we bui9ld on FreeRTOS~\cite{freertos}, as illustraded in Figure~\ref{fig:firmware-system}. Task isolation and priority levels make the codebase modular and maintainable.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.45\textwidth]{images/firmware-system-design.png}
-\caption{Firmware system architecture overview}\label{fig:firmware-system}
+\caption{Overview of the FreeRTOS-based firmware architecture}\label{fig:firmware-system}
 \end{figure}
 
-\subsection{Firmware Architecture}
+\subsection{Overall Architecture}
 
-As seen on Figure-\ref{fig:firmware-system}, the architecture is organized into three different modules which use inter-task communication mechanisms provided by FreeRTOS. 
+Figure~\ref{fig:firmware-system} shows three primary functional domains, each implemented as one or more FreeRTOS tasks communicating via inter-task communication mechanisms provided by FreeRTOS.
 
-\paragraph{LoRa Communiction Group}
+\subsection{LoRa Communication}
+\begin{itemize}
+  \item \textbf{IRQ Handler}
+    Waits on the SX1276~\cite{sx1276} interrupt line to detect packet RX/TX completion, then gives a binary semaphore.
+  \item \textbf{Receive Task}
+    Blocks on that semaphore, retrieves incoming packets, decrypts them with hardware-accelerated AES-128 in CTR mode, and forwards them for processing.  
+  \item \textbf{Transmit Task}
+    Pulls outgoing messages from a FreeRTOS queue, encrypts and formats them, then issues the LoRa send command.
+  \item \textbf{Cleanup Task}
+    Periodically scans stored packet buffers for timeouts and frees associated heap memory.
+\end{itemize}
 
-This group consists of four different tasks: \textit{Receive}, \textit{Send}, \textit{IRQ Handling} and \textit{Cleanup}. The Recieve task blocks on a semaphore that will be set when the IRQ handling task get interupted by the sx1276-module~\cite{sx1276}, to notfiy (rx/tx)-completion. 
+\subsection{Sensor Management}
+Each sensor (e.g.\ temperature, pressure, speed) runs its own task at a low priority. Tasks periodically sample the hardware interface, package reacdings, and enqueues them for transmission.
 
+\subsection{Audio Processign}
+\begin{itemize}
+  \item \textbf{Speech Synthesis Task}
+    A port of \texttt{espeak-ng}~\cite{espeakng} with all file I/O replaced bu in-memory C arrays. Wich dequeues strings from a FreeRTOS queue, synthesises, streams audio to I2S hardware.
+  \item \textbf{WAV playback Task}
+    Streams hard-coded WAV data (e.g.\ racing flags, standard phrases) to the I2S hardware.
+\end{itemize}
 
-\paragraph{Sensor Management Group}
+\subsection{Power and Memory Management}
 
-\paragraph{Audio Processing Group}
+All tasks are assigned carefully chosen priorities (Table~\ref{tab:priorities}) so that time-critical communication tasks preempt lower-priority work. We enable FreeRTOS tickless idle to allow the STM32U5 to enter deep sleep whenever the system is idle.
 
-\paragraph{Power and Memory Management}
-
-
-% What i want to say:
-%  - Heap-5 memory section in upper region of ram -> making disabling of ram blocks more straight forward
-%  - System architecture consisting of, 
-%     LoRa Communiction group: receiving (waiting or IRQ task), sending (Waiting for message to send), cleanup (Periodic cleanup of heap allocated objects)
-%     Sensor group: Multiple sensor task using send queue to send data over LoRa
-%     Audio group: Ported espeak-ng to embedded system by removing file system references and hardcoding values, wav-file playback by converting wav files to c-arrays.
-% 
-%  - LoRa Hardware accelerated AES in CTR mode
-%  - 
-% 
-
+\begin{table}[H]
+  \centering
+  \caption{Task priorities and stack usage}
+  \label{tab:priorities}
+  \begin{tabular}{lrr}
+    \hline
+    Task                     & Priority & Stack (bytes) \\
+    \hline
+    LoRa IRQ Handler         & 8        & 128            \\
+    Speech Synthesis         & 7        & 4\,800         \\
+    WAV Playback             & 7        & 256            \\
+    LoRa Transmit            & 5        & 128            \\
+    Cleanup                  & 5        & 128            \\
+    Sensor (each)            & 3        & 256            \\
+    \hline
+  \end{tabular}
+\end{table}
