@@ -114,7 +114,18 @@ In hydrogen-powerd endurance racing, uninterupted telmetry and communication bet
 
 \section{Testing}
 
+\subsection{Test Setup}
+The system was evaluated primarily in a laboratory environment. Key aspects such as power consumption, LoRa communication integrity, and audio output functionality were tested. Most tests were conducted manually, involving the transmission of periodic test messages and monitoring system responses via serial output and audio feedback. Power draw was observed using an inline current measurement tool, and LoRa transmissions were validated using logic analyzers and debug logs.
+
+\subsection{Communication Testing}
+To verify LoRa communication, encrypted packets were periodically transmitted and received between two system nodes. Tests confirmed successful decryption, CRC validation, and end-to-end data integrity.
+
+\subsection{Audio Output Testing}
+WAV file playback was validated by connecting the system's analog output to external speakers and assessing the clarity of preloaded audio samples. Speech synthesis was tested by transmitting predefined sentences to the device and evaluating intelligibility through blind listening tests. Testers rated intelligibility qualitatively. While overall clarity was sufficient for basic commands, future improvements may include tuning output filters and optimizing speech synthesis parameters for better naturalness.
+
 \section{Conclusion}
+
+
 
 \input{chapters/bibliography}
 
