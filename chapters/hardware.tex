@@ -1,22 +1,22 @@
 \section{Hardware Design and Implementation}
 
 \subsection{System overview}
-De functies van de hardware bestaan uit 6 delen; deze zijn onder andere: voeding, microcontroller, geluid opnemen, geluid produceren, draadloze communicatie, voeding schakelen.
-Dit is buiten de microcontroller voorien op een PCB in de vorm van een schild passen op een STM32 Nulceo bord met microcontroller.
-Deze onderdelen moeten low power zijn en werken vanuit een 12V voeding.
-De voeding zal bestaan uit een geschakelde voeding die een 3.3V en een 5V zal produceren voor de verdere logica. 
-de microcontroller kan geluid verwerken via een externe ADC en geluid uitsturen via een externe DAC.
-Deze voeding van deze geluids onderdelen kunnen geschakeled worden door de microcontroller door middel van mosfets.
-Dit zorgt ervoor dat als de onderdelen niet gebruikt worden er geen energie verbruikt wordt.
-Via een LoRa module kan de verwerkte spraak verstuurd worden of antvangen worden en afgespeeld.
+%De functies van de hardware bestaan uit 6 delen; deze zijn onder andere: voeding, microcontroller, geluid opnemen, geluid produceren, draadloze communicatie, voeding schakelen.
+%Dit is buiten de microcontroller voorzien op een PCB in de vorm van een schild passend op een STM32 Nulceo bord met microcontroller.
+%Deze onderdelen moeten low power zijn en werken vanuit een 12V voeding.
+%De voeding zal bestaan uit een geschakelde voeding die een 3.3V en een 5V zal produceren voor de verdere logica. 
+%de microcontroller kan geluid verwerken via een externe ADC (analog digital converter) en geluid uitsturen via een externe DAC (digital analog converter).
+%Deze voeding van deze geluids onderdelen kunnen geschakeled worden door de microcontroller door middel van mosfets.
+%Dit zorgt ervoor dat als de onderdelen niet gebruikt worden er geen energie verbruikt wordt.
+%Via een LoRa module kan de verwerkte spraak verstuurd worden of antvangen worden en afgespeeld.
 
-The PCB is divided into six sections: power supply, microcontroller, audio recording, audio playback,
- wireless communication, and power control.
-All components are designed to be low power and operate from a 12V source.
-A switching regulator generates 3.3V and 5V for the rest of the logic.
-Audio is processed by the microcontroller via an external ADC and played back through an external DAC.
-Power to the audio circuitry can be controlled by the microcontroller using MOSFETs, allowing unused parts to be completely powered down to save energy.
-Processed speech can be transmitted or received via a LoRa module and played back as needed.
+The hardware functionalities can be divided into six main components: power supply, microcontroller, audio recording, audio playback, wireless communication, and power switching.
+Apart from the microcontroller, these components are implemented on a custom PCB designed as a shield compatible with an STM32 Nucleo board.
+All components are designed to be low-power and operate from a 12V power source.
+The power supply includes a switching regulator that generates both 3.3V and 5V rails to power the remaining circuitry.
+Audio input is handled via an external analog-to-digital converter (ADC), while audio output is managed through an external digital-to-analog converter (DAC).
+The power to these audio components can be switched on or off by the microcontroller using MOSFETs, allowing the system to conserve energy when the components are not in use.
+Processed speech data can be transmitted or received via a LoRa module, and subsequently played back if needed.
 
 \subsection{Power supply}
 
@@ -30,30 +30,59 @@ Processed speech can be transmitted or received via a LoRa module and played bac
 % efficientie bij hele kleine duty cycles wat handig is bij een laag stroomverbruik.
 
 The power supply uses two buck converters to step down the 12V input to 5V and 3.3V, based on the TPS629203.
- This converter supports input voltages up to 17V and delivers up to 300mA of output current.
- Thanks to its high switching frequency, it achieves excellent efficiency, which is further optimized by dynamically adjusting both the switching frequency and mode depending on the load. It operates in either PWM (Pulse Width Modulation) or PFM (Pulse Frequency Modulation), depending on the current demand. This feature, known as AEE (Automatic Efficiency Enhancement), maintains high efficiency even at very low duty cycles, making it particularly suitable for low-power applications.\\
-
-
-bron:	https://www.ti.com/product/TPS629203
+ This converter supports input voltages up to 17V and delivers up to 300mA of output current [5].
+ Thanks to its high switching frequency, it achieves excellent efficiency, which is further optimized by dynamically adjusting both the switching frequency and mode depending on the load. It operates in either PWM (Pulse Width Modulation) or PFM (Pulse Frequency Modulation), depending on the current demand. This feature, known as Automatic Efficiency Enhancement (AEE), maintains high efficiency even at very low duty cycles, making it particularly suitable for low-power applications.\\
 
 \subsection{Microcontroller}
 
-Als microcontroller werd gebruik gemaakt van de STM32U5.
- Deze meest recente generatie van STM32 ultra low power microcontrollers
- is ideaal voor applicaties waar een minimaal stroomverbruik vereist is.
-Ondanks het ultra lage stroomverbruik zijn er uitvoeringen met 4Mb flash memory en 3 Mb SRAM.
-via meerdere low-power modes kan de microcontroller tijdens het wachten op boodschappen
- en versturen van boodschappen in naar een low power mode gaan waar bepaalde functionaleiten uitgeschakeld zijn.
-Om te ontwekken uit deze modi wordt een LPGPIO(low-power general-purpose input/output). 
-In deze opstelling is dit een gekoppeld aan een pin van de LoRa module en een digitale input.
-Op deze manier wordt de microcontroller ontwerkt bij het binnenkomen van LoRa data en een druk op de talk knop.
+%Als microcontroller werd gebruik gemaakt van de STM32U5.
+% Deze meest recente generatie van STM32 ultra low power microcontrollers
+% is ideaal voor applicaties waar een minimaal stroomverbruik is vereist.
+%Ondanks het ultra lage stroomverbruik zijn er uitvoeringen met 4Mb flash memory en 3 Mb SRAM.
+%Via meerdere low-power modes kan de microcontroller tijdens het wachten op boodschappen
+% en versturen van boodschappen in naar een low power mode gaan waar bepaalde functionaliteiten uitgeschakeld zijn.
+%Om te ontwekken uit deze modi wordt een LPGPIO(low-power general-purpose input/output) gebruikt. 
+%In deze opstelling is dit een gekoppeld aan een pin van de LoRa module en een digitale input.
+%Op deze manier wordt de microcontroller ontwerkt bij het binnenkomen van LoRa data en een
+% druk op de talk knop verbonden met de digitale input.
+
+The STM32U5 microcontroller was selected for this design. This latest generation of STM32 ultra-low-power microcontrollers is well-suited for applications that require minimal energy consumption.
+Despite its low power profile, certain variants offer up to 4 MB of Flash memory and 3 MB of SRAM, enabling complex processing and data storage [1].
+The microcontroller supports multiple low-power modes, allowing it to significantly reduce power consumption during periods of inactivity, such as while waiting to send or receive messages.
+Wake-up from these modes is achieved using Low-Power General-Purpose Input/Output (LPGPIO) pins.
+In this setup, an LPGPIO pin is connected to both the LoRa module and a digital input. This configuration enables the microcontroller to wake up upon receiving incoming LoRa data or when the talk butto connected to the digital input is pressed.
+
+\subsection{LoRa}
+
+%Voor de draadloze communicatie is gekozen voor LoRa deze technologie is de fysieke laag voor het bekendere LoRaWAN.
+%Deze module is gemakkelijk verkrijgbaar en numerous examples and libraries are available online.
+%Om deze technology te gebruiken is gekozen voor de RFM96W van Hoperf [6]. Deze compacte PCB is handmatig te solderen en 
+%omvat buiten de antenna alle hardware nodig voor LoRa communicatie.
+% Communicatie met deze module is mogelijk via SPI en 5 I/O (input/output) pinnen.
+%De data die verstuurd moet worden komt via de SPI bus binnen op de module. 
+%Indien data ontvangen wordt zal via een I/O pin gemeld worden op binnenkomende data.
+%De antenne wordt via een SMA connector verbonden met de PCB. 
+%Hierbij is het mogelijk om een antenne met $\frac{\lambda}{2}$ of $\frac{\lambda}{4}$ te gebruiken.
+%Indien een antenne voor $\frac{\lambda}{2}$ gebruikt wordt kan deze via een kabel op een andere plaats gebruikt worden.
+
+For wireless communication, LoRa was selected. This technology serves as the physical layer for the more well-known LoRaWAN protocol.
+The chosen module, the RFM96W by HopeRF [6], is readily available and supported by numerous examples and open-source libraries online, making integration and development straightforward.
+This compact PCB can be hand-soldered and includes all the necessary hardware for LoRa communication, except for the antenna.
+Communication with the module is established via the SPI bus and GPIO pins.
+Data to be transmitted is sent to the module via the SPI interface, while incoming data is signaled through a dedicated I/O pin.
+The antenna is connected to the PCB using an SMA connector. Both $\frac{\lambda}{2}$ and $\frac{\lambda}{4}$ antennas can be used.
+A $\frac{\lambda}{2}$ antenna may also be placed remotely using a coaxial cable, allowing for more flexible antenna positioning.
+
+\subsection{ADC}
+
+Om audio in te lezen is gebruik gemaakt van een externe ADC, de PCM1808.
 
 
+\subsection{DAC}
 
+\subsection{Power switching}
 
-
-bron [1]
-
+\subsection{PCB}
 
 
 
