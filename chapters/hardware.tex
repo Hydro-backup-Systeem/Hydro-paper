@@ -1,13 +1,14 @@
 \section{Hardware Design and Implementation}
 
 \subsection{System overview}
-%De PCB bestaat uit 6 delen; deze zijn onder andere: voeding, microcontroller, geluid opnemen, geluid produceren, draadloze communicatie, voeding schakelen.
-%Deze onderdelen moeten low power zijn en werken vanuit een 12V voeding.
-%De voeding zal bestaan uit een geschakelde voeding die een 3.3V en een 5V zal produceren voor de verdere logica. 
-%de microcontroller kan geluid verwerken via een externe ADC en geluid uitsturen via een externe DAC.
-%Deze voeding van deze geluids onderdelen kunnen geschakeled worden door de microcontroller door middel van mosfets.
-%Dit zorgt ervoor dat als de onderdelen niet gebruikt worden er geen energie verbruikt wordt.
-%Via een LoRa module kan de verwerkte spraak verstuurd worden of antvangen worden en afgespeeld.
+De functies van de hardware bestaan uit 6 delen; deze zijn onder andere: voeding, microcontroller, geluid opnemen, geluid produceren, draadloze communicatie, voeding schakelen.
+Dit is buiten de microcontroller voorien op een PCB in de vorm van een schild passen op een STM32 Nulceo bord met microcontroller.
+Deze onderdelen moeten low power zijn en werken vanuit een 12V voeding.
+De voeding zal bestaan uit een geschakelde voeding die een 3.3V en een 5V zal produceren voor de verdere logica. 
+de microcontroller kan geluid verwerken via een externe ADC en geluid uitsturen via een externe DAC.
+Deze voeding van deze geluids onderdelen kunnen geschakeled worden door de microcontroller door middel van mosfets.
+Dit zorgt ervoor dat als de onderdelen niet gebruikt worden er geen energie verbruikt wordt.
+Via een LoRa module kan de verwerkte spraak verstuurd worden of antvangen worden en afgespeeld.
 
 The PCB is divided into six sections: power supply, microcontroller, audio recording, audio playback,
  wireless communication, and power control.
@@ -37,10 +38,17 @@ bron:	https://www.ti.com/product/TPS629203
 
 \subsection{Microcontroller}
 
-als microcontroller werd gebruik gemaakt van de STM32U5.
+Als microcontroller werd gebruik gemaakt van de STM32U5.
  Deze meest recente generatie van STM32 ultra low power microcontrollers
  is ideaal voor applicaties waar een minimaal stroomverbruik vereist is.
 Ondanks het ultra lage stroomverbruik zijn er uitvoeringen met 4Mb flash memory en 3 Mb SRAM.
+via meerdere low-power modes kan de microcontroller tijdens het wachten op boodschappen
+ en versturen van boodschappen in naar een low power mode gaan waar bepaalde functionaleiten uitgeschakeld zijn.
+Om te ontwekken uit deze modi wordt een LPGPIO(low-power general-purpose input/output). 
+In deze opstelling is dit een gekoppeld aan een pin van de LoRa module en een digitale input.
+Op deze manier wordt de microcontroller ontwerkt bij het binnenkomen van LoRa data en een druk op de talk knop.
+
+
 
 
 
