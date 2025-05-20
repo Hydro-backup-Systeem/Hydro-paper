@@ -1,1 +1,51 @@
 \section{Hardware Design and Implementation}
+
+\subsection{System overview}
+%De PCB bestaat uit 6 delen; deze zijn onder andere: voeding, microcontroller, geluid opnemen, geluid produceren, draadloze communicatie, voeding schakelen.
+%Deze onderdelen moeten low power zijn en werken vanuit een 12V voeding.
+%De voeding zal bestaan uit een geschakelde voeding die een 3.3V en een 5V zal produceren voor de verdere logica. 
+%de microcontroller kan geluid verwerken via een externe ADC en geluid uitsturen via een externe DAC.
+%Deze voeding van deze geluids onderdelen kunnen geschakeled worden door de microcontroller door middel van mosfets.
+%Dit zorgt ervoor dat als de onderdelen niet gebruikt worden er geen energie verbruikt wordt.
+%Via een LoRa module kan de verwerkte spraak verstuurd worden of antvangen worden en afgespeeld.
+
+The PCB is divided into six sections: power supply, microcontroller, audio recording, audio playback,
+ wireless communication, and power control.
+All components are designed to be low power and operate from a 12V source.
+A switching regulator generates 3.3V and 5V for the rest of the logic.
+Audio is processed by the microcontroller via an external ADC and played back through an external DAC.
+Power to the audio circuitry can be controlled by the microcontroller using MOSFETs, allowing unused parts to be completely powered down to save energy.
+Processed speech can be transmitted or received via a LoRa module and played back as needed.
+
+\subsection{Power supply}
+
+%De voeding bestaat uit 2 buck converters die de 12V voeding verlagen naar 5V en 3.3V. 
+%Hiervoor is gebruik gemaakt van de TPS629203. 
+%Deze converter heeft een spanningsbereik tot 17V en levert een maximale stroom van 300mA.
+%Door de hoge schakelfrequentie van  kan een hoog rendement bekomen worden. 
+%De schakelfrequenite en schakelmodus worden dynamisch bepaald op basis van de belasting.
+%Het schakelen kan gebeuren via PWM (puls width modulation) of PFM (pulse frewuency modulation).
+%Deze modus noemt AEE (Automatic Efficiency  Enhancement) en zorgt onder andere voor een hoge
+% efficientie bij hele kleine duty cycles wat handig is bij een laag stroomverbruik.
+
+The power supply uses two buck converters to step down the 12V input to 5V and 3.3V, based on the TPS629203.
+ This converter supports input voltages up to 17V and delivers up to 300mA of output current.
+ Thanks to its high switching frequency, it achieves excellent efficiency, which is further optimized by dynamically adjusting both the switching frequency and mode depending on the load. It operates in either PWM (Pulse Width Modulation) or PFM (Pulse Frequency Modulation), depending on the current demand. This feature, known as AEE (Automatic Efficiency Enhancement), maintains high efficiency even at very low duty cycles, making it particularly suitable for low-power applications.\\
+
+
+bron:	https://www.ti.com/product/TPS629203
+
+\subsection{Microcontroller}
+
+als microcontroller werd gebruik gemaakt van de STM32U5.
+ Deze meest recente generatie van STM32 ultra low power microcontrollers
+ is ideaal voor applicaties waar een minimaal stroomverbruik vereist is.
+Ondanks het ultra lage stroomverbruik zijn er uitvoeringen met 4Mb flash memory en 3 Mb SRAM.
+
+
+
+bron [1]
+
+
+
+

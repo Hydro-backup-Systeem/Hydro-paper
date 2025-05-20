@@ -1,6 +1,6 @@
 \section{Firmware Design and Implementation}
 
-This section describes the firmware developed for the STM32U5 microcontroller~\cite{stm32u5}, which forms the core of our low-energy backup communication system. It handles real-time LoRa communication, sensor data acquisistion, and voice output via speech synthesis or WAV playback. To guarantee deterministic timing, we bui9ld on FreeRTOS~\cite{freertos}, as illustraded in Figure~\ref{fig:firmware-system}. Task isolation and priority levels make the codebase modular and maintainable.
+This section describes the firmware developed for the STM32U5 microcontroller~\cite{stm32u5}, which forms the core of our low-energy backup communication system. It handles real-time LoRa communication, sensor data acquisistion, and voice output via speech synthesis or WAV playback. To guarantee deterministic timing, we build on FreeRTOS~\cite{freertos}, as illustraded in Figure~\ref{fig:firmware-system}. Task isolation and priority levels make the codebase modular and maintainable.
 
 \begin{figure}[H]
 \centering
