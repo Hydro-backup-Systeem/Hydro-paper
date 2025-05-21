@@ -1,6 +1,6 @@
 \section{Firmware Design and Implementation}
 
-This section describes the firmware developed for the STM32U5 microcontroller~\cite{stm32u5}, which forms the core of our low-energy backup communication system. It handles real-time LoRa communication, sensor data acquisistion, and voice output via speech synthesis or WAV playback. To guarantee deterministic timing, we build on FreeRTOS~\cite{freertos}, as illustraded in Figure~\ref{fig:firmware-system}. Task isolation and priority levels make the codebase modular and maintainable.
+This section describes the firmware developed for the STM32U5 microcontroller~\cite{stm32u5}, which forms the core of our low-energy backup communication system. It handles real-time LoRa communication, sensor data acquisition, and voice output via speech synthesis or WAV playback. To guarantee deterministic timing, we build on FreeRTOS~\cite{freertos}, as illustrated in Figure~\ref{fig:firmware-system}. Task isolation and priority levels make the codebase modular and maintainable.
 
 \begin{figure}[H]
 \centering
@@ -25,12 +25,12 @@ Figure~\ref{fig:firmware-system} shows three primary functional domains, each im
 \end{itemize}
 
 \subsection{Sensor Management}
-Each sensor (e.g.\ temperature, pressure, speed) runs its own task at a low priority. Tasks periodically sample the hardware interface, package reacdings, and enqueues them for transmission.
+Each sensor (e.g.\ temperature, pressure, speed) runs its own task at a low priority. Tasks periodically sample the hardware interface, package readings, and enqueue them for transmission.
 
-\subsection{Audio Processign}
+\subsection{Audio Processing}
 \begin{itemize}
   \item \textbf{Speech Synthesis Task}
-    A port of \texttt{espeak-ng}~\cite{espeakng} with all file I/O replaced bu in-memory C arrays. Wich dequeues strings from a FreeRTOS queue, synthesises, streams audio to I2S hardware.
+    A port of \texttt{espeak-ng}~\cite{espeakng} with all file I/O replaced by in-memory C arrays. Which dequeues strings from a FreeRTOS queue, synthesises, streams audio to I2S hardware.
   \item \textbf{WAV playback Task}
     Streams hard-coded WAV data (e.g.\ racing flags, standard phrases) to the I2S hardware.
 \end{itemize}
