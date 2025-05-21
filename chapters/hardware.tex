@@ -75,12 +75,30 @@ A $\frac{\lambda}{2}$ antenna may also be placed remotely using a coaxial cable,
 
 \subsection{ADC}
 
-Om audio in te lezen is gebruik gemaakt van een externe ADC, de PCM1808.
-
+Om audio in te lezen is gebruik gemaakt van een externe ADC, de PCM1808 [7].
+Deze IC is gekozen naar beschikbaarheid en soldeerbaarheid. 
+De uitgang van deze ADC is via I2S en kan gemakkelijk ingelezen worden in de microcontroller.
+De geluids toevoer van deze  ADC word geproduceerd door een microfoon.
+ Het signaal van deze microfoon word versterkt en gefilterd door een opamp versterker gevoed op DC.
+Het versterk shema is gebaseerd op een voorbeeld door Texas Instruments [8].
 
 \subsection{DAC}
 
+Om spraak te genereren wordt een  externe DAC gebruikt, de PCM5100A [9].
+Deze DAC werd gekozen naar beschikbaarheid en soldeerbaarheid.
+Het sturen van deze DAC verloopt via I2S vanuit de microcontroller.
+Na de DAC staat een opamp die het geluidssignaal versterkt met een 
+vermogen van 50mW, bruikbaar voor een hoofdtelefoon.
+
 \subsection{Power switching}
+
+De audio hardware moet niet continu actief zijn. 
+Enkel als een boodschap ontvangen wordt moet er geluid geproduceerd worden en 
+enkel als de talk knop wordt ingedrukt moet er geluid ingelezen worden.
+Daarom is de voeding voor het ingangs en uitgangs audigedeelte geschakeld. 
+Dit omvat het schakelen van de 5V en de 3.3V voeding naar beide delen.
+Door mosfet aangestuurd door een uitgangspin van de microcontroller schakelen deze voeding.
+Door het gebruik van mosfet is er een minimale spanningsval over de schakelaars bij geleiding.
 
 \subsection{PCB}
 
