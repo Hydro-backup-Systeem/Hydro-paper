@@ -18,6 +18,35 @@ Audio input is handled via an external analog-to-digital converter (ADC), while 
 The power to these audio components can be switched on or off by the microcontroller using MOSFETs, allowing the system to conserve energy when the components are not in use.
 Processed speech data can be transmitted or received via a LoRa module, and subsequently played back if needed.
 
+\subsection{PCB}
+
+%Om een systeem te maken die alle functies  mogelijk maakt is een PCB ontwikkeld. 
+%Deze PCB is in de vorm van een schild, een PCB met een header die past in een andere PCB.
+%In dit project wordt een schild gemaakt voor een STM32 Nucleo-144 bord. 
+%Op dit Nucleo bord zit een microcontroller met een programmer en debug circuit.
+%Dit wordt aangekocht omdat het solderen van de microcontroller handmatig niet mogelijk is.
+%Dit Nucleo bord brengt alle verbindingen van de microcontroller naar de headers.
+%Het schild verbonden met deze header kan voeding leveren en gebruik maken van alle I/O
+
+
+To implement a system that supports all required functionalities, a custom printed circuit board (PCB) was developed.
+This PCB is designed as a shield, an add-on board with headers that mate with a host PCB.
+In this project, the shield interfaces with an STM32 Nucleo-144 development board.
+The Nucleo board features a microcontroller integrated with an onboard programmer and debugger.
+This board was selected to avoid the complexity of manually soldering fine-pitch microcontroller packages.
+The Nucleo board brings out all microcontroller signals to accessible headers, enabling the shield to supply power and utilize the full range of I/O capabilities.\\
+
+The shield offers a wide range of I/O capabilities.
+UART, I2C, and SPI buses, as well as two digital input lines, are accessible via screw terminals.
+In the audio section, connectors are available both before and after the amplifier stage.
+Small jumper pads allow PCB traces to be manually connected or disconnected. These jumpers are used to configure ADC settings and to isolate the I²S lines from the microcontroller when operating with digital audio instead of analog.
+
+Each functional section: audio input, audio output, LoRa, and the microcontroller is electrically isolated via pin header jumpers.
+These headers can also accommodate current meters, allowing current consumption to be measured per subsystem.
+In addition, voltage test points are provided near each jumper, enabling accurate power and voltage measurements during debugging.
+
+For the connection between the LoRa module and the antenna, the characteristic impedance of the PCB trace does not need to be matched, as the trace length satisfies the condition l < $\frac{\lambda}{10}$.
+
 \subsection{Power supply}
 
 %De voeding bestaat uit 2 buck converters die de 12V voeding verlagen naar 5V en 3.3V. 
@@ -75,32 +104,49 @@ A $\frac{\lambda}{2}$ antenna may also be placed remotely using a coaxial cable,
 
 \subsection{ADC}
 
-Om audio in te lezen is gebruik gemaakt van een externe ADC, de PCM1808 [7].
-Deze IC is gekozen naar beschikbaarheid en soldeerbaarheid. 
-De uitgang van deze ADC is via I2S en kan gemakkelijk ingelezen worden in de microcontroller.
-De geluids toevoer van deze  ADC word geproduceerd door een microfoon.
- Het signaal van deze microfoon word versterkt en gefilterd door een opamp versterker gevoed op DC.
-Het versterk shema is gebaseerd op een voorbeeld door Texas Instruments [8].
+%Om audio in te lezen is gebruik gemaakt van een externe ADC, de PCM1808 [7].
+%Deze IC is gekozen naar beschikbaarheid en soldeerbaarheid. 
+%De uitgang van deze ADC is via I2S en kan gemakkelijk ingelezen worden door de microcontroller.
+%De geluids toevoer van deze  ADC word geproduceerd door een microfoon.
+% Het signaal van deze microfoon word versterkt en gefilterd door een opamp versterker gevoed op DC.
+%Het versterker shema is gebaseerd op een voorbeeld door Texas Instruments [8].
+
+Audio acquisition was performed using an external ADC, the PCM1808 [7].
+This integrated circuit was selected based on its availability and ease of soldering.
+ The ADC provides an I²S output, which can be readily interfaced with the microcontroller.
+Audio input to the ADC is supplied by a microphone. 
+The microphone signal is amplified and filtered using an operational amplifier (op-amp) circuit powered by a DC supply.
+To change the sensitivity the volume can be adjusted with a potentiometer.
+This amplifier design is based on a reference schematic provided by Texas Instruments [8]. 
+
 
 \subsection{DAC}
 
-Om spraak te genereren wordt een  externe DAC gebruikt, de PCM5100A [9].
-Deze DAC werd gekozen naar beschikbaarheid en soldeerbaarheid.
-Het sturen van deze DAC verloopt via I2S vanuit de microcontroller.
-Na de DAC staat een opamp die het geluidssignaal versterkt met een 
-vermogen van 50mW, bruikbaar voor een hoofdtelefoon.
+%Om spraak te genereren wordt een  externe DAC gebruikt, de PCM5100A [9].
+%Deze DAC werd gekozen naar beschikbaarheid en soldeerbaarheid.
+%Het sturen van deze DAC verloopt via I2S vanuit de microcontroller.
+%Na de DAC staat een opamp die het geluidssignaal versterkt met een 
+%vermogen van 50mW, bruikbaar voor een hoofdtelefoon.
+
+Speech output is generated using an external DAC, the PCM5100A [9].
+This DAC was selected based on its availability and ease of soldering. 
+It is driven via the I²S interface from the microcontroller.
+Following the DAC, an op-amp is used to amplify the audio signal to a power level of  50 mW, suitable for headphone use.
 
 \subsection{Power switching}
 
-De audio hardware moet niet continu actief zijn. 
-Enkel als een boodschap ontvangen wordt moet er geluid geproduceerd worden en 
-enkel als de talk knop wordt ingedrukt moet er geluid ingelezen worden.
-Daarom is de voeding voor het ingangs en uitgangs audigedeelte geschakeld. 
-Dit omvat het schakelen van de 5V en de 3.3V voeding naar beide delen.
-Door mosfet aangestuurd door een uitgangspin van de microcontroller schakelen deze voeding.
-Door het gebruik van mosfet is er een minimale spanningsval over de schakelaars bij geleiding.
+%De audio hardware moet niet continu actief zijn. 
+%Enkel als een boodschap ontvangen wordt moet er geluid geproduceerd worden en 
+%enkel als de talk knop wordt ingedrukt moet er geluid ingelezen worden.
+%Daarom is de voeding voor het ingangs en uitgangs audiogedeelte geschakeld. 
+%Dit omvat het schakelen van de 5V en de 3.3V voeding naar beide delen.
+%Door mosfets aangestuurd door een uitgangspin van de microcontroller schakelen deze voeding.
+%Door het gebruik van mosfet is er een minimale spanningsval over de schakelaars bij geleiding.
 
-\subsection{PCB}
-
-
-
+The audio hardware does not need to remain continuously active.
+Audio output is only required upon receptionof a speech message,
+ and audio input is only needed when the talk button is pressed.
+To accommodate this, power to both the input and output audio sections is switchable. 
+This involves controlling the 5 V and 3.3 V supply rails to these sections.
+Power switching is achieved using MOSFETs, which are controlled by a digital output pin of the microcontroller.
+The use of MOSFETs ensures minimal voltage drop across the switches during conduction.

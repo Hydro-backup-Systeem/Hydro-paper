@@ -131,6 +131,13 @@ To verify LoRa communication, encrypted packets were periodically transmitted an
 \subsection{Audio Output Testing}
 WAV file playback was validated by connecting the system's analog output to external speakers and assessing the clarity of preloaded audio samples. Speech synthesis was tested by transmitting predefined sentences to the device and evaluating intelligibility through blind listening tests. Testers rated intelligibility qualitatively. While overall clarity was sufficient for basic commands, future improvements may include tuning output filters and optimizing speech synthesis parameters for better naturalness.
 
+\subsection{Audio Input Testing}
+
+After connecting the microphone, an oscilloscope was used to verify that the audio waveform was properly amplified and routed to the ADC.
+The ADC includes an onboard crystal oscillator that generates a clock signal, causing it to continuously transmit data.
+All I2S bus data lines were probed and analyzed using the oscilloscope.
+These measurements confirmed the correct operation of the I2S interface.
+
 \section{Conclusion}
 
 \section*{Acknowledgment}
