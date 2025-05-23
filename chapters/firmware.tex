@@ -24,6 +24,8 @@ Figure~\ref{fig:firmware-system} shows three primary functional domains, each im
     Periodically scans stored packet buffers for timeouts and frees associated heap memory.
 \end{itemize}
 
+The message formatting steps mentioned above, including encryption, fragmentation, and encapsulation, are detailed in Section~\ref{sec:message-processing}.
+
 \subsection{Sensor Management}
 Each sensor (e.g.\ temperature, pressure, speed) runs its own task at a low priority. Tasks periodically sample the hardware interface, package readings, and enqueue them for transmission.
 
@@ -56,3 +58,32 @@ All tasks are assigned carefully chosen priorities (Table~\ref{tab:priorities}) 
     \hline
   \end{tabular}
 \end{table}
+
+\subsection{Fragmentation and Reassembly of Encrypted Messages}\label{sec:message-processing}
+
+The transmission process, illustrated in Figure~\ref{fig:fragmentation-flow}, begins with raw message data assigned a unique ID. This data is then processed through the following steps:
+
+\textbf{Message Transmission Pipeline}
+\begin{enumerate}
+  \item The raw message is padded using PKCS\#7 to ensure its length is a multiple of 16 bytes, satisfying the requirements of the hardware-acelerated AES module.
+  \item The padded message is encrypted using AES-128 in CTR mode.
+  \item The resulting ciphertext is fragmented into fixed-size chunks. Each fragment is encapsulated in a packet containing the meassage ID, fragment index, and total number of fragments.
+  \item Packets are enqueued for transmission via LoRa.
+\end{enumerate}
+
+\textbf{Message Reception Pipeline}
+\begin{enumerate}
+  \setcounter{enumi}{4}
+  \item Recieved packets are collected in a queue.
+  \item Each packet is decapsulated and sorted by message ID. Once all fragments of a message are received, they are reassembled into the full encrypted message.
+  \item The complete ciphertext is decrypted to recover the padded plaintext.
+  \item Padding is removed, restoring the original raw message.
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.45\textwidth]{images/packet-fragmentation-flow.png}
+  \caption{Flowchart illustrating the message encryption fragmentation process prior to LoRa transmission.}
+  \label{fig:fragmentation-flow}
+\end{figure}
+
