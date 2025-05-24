@@ -133,10 +133,33 @@ WAV file playback was validated by connecting the system's analog output to exte
 
 \subsection{Audio Input Testing}
 
+\subsection{Power measuring}
+
 After connecting the microphone, an oscilloscope was used to verify that the audio waveform was properly amplified and routed to the ADC.
 The ADC includes an onboard crystal oscillator that generates a clock signal, causing it to continuously transmit data.
-All I2S bus data lines were probed and analyzed using the oscilloscope.
-These measurements confirmed the correct operation of the I2S interface.
+All I²S bus data lines were probed and analyzed using the oscilloscope.
+These measurements confirmed the correct operation of the I²S interface.
+
+\subsection{LoRa on PCB}
+
+range limited to 440m ?
+
+\subsection{Power measurement}
+
+\subsubsection{LoRa power consumption}
+
+\begin{tabular}{|c|c||c|}
+  \hline
+  \textbf{idle} & \textbf{receiving} & \textbf{sending} \\
+  \hline
+  5.8 mW & 38.3 mW & 382 mW \\
+  \hline
+\end{tabular} \\
+
+The data was measured while transmitting at maximum output power.
+This power consumption is compared to NB-IoT, another widely used wireless protocol with a similar communication range.
+LoRa demonstrates significantly lower power consumption compared to NB-IoT.
+According to external data, NB-IoT consumes approximately 65\% more energy than LoRa [10].
 
 \section{Conclusion}
 

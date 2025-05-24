@@ -34,18 +34,21 @@ This PCB is designed as a shield, an add-on board with headers that mate with a 
 In this project, the shield interfaces with an STM32 Nucleo-144 development board.
 The Nucleo board features a microcontroller integrated with an onboard programmer and debugger.
 This board was selected to avoid the complexity of manually soldering fine-pitch microcontroller packages.
-The Nucleo board brings out all microcontroller signals to accessible headers, enabling the shield to supply power and utilize the full range of I/O capabilities.\\
+The Nucleo board brings out all microcontroller signals to accessible headers, enabling the shield to supply power and utilize the full range of I/O capabilities.
 
 The shield offers a wide range of I/O capabilities.
-UART, I2C, and SPI buses, as well as two digital input lines, are accessible via screw terminals.
+UART, I²C, and SPI buses, as well as two digital input lines, are accessible via screw terminals.
 In the audio section, connectors are available both before and after the amplifier stage.
-Small jumper pads allow PCB traces to be manually connected or disconnected. These jumpers are used to configure ADC settings and to isolate the I²S lines from the microcontroller when operating with digital audio instead of analog.
+Small surface mount device (SMD) jumper pads allow PCB traces to be manually connected or disconnected. 
+These jumpers are used to configure ADC settings and to isolate the I²S lines from the microcontroller when operating with digital audio instead of analog.
 
-Each functional section: audio input, audio output, LoRa, and the microcontroller is electrically isolated via pin header jumpers.
+Each functional section: audio input, audio output, LoRa, and the microcontroller are isolated from power via pin header jumpers.
 These headers can also accommodate current meters, allowing current consumption to be measured per subsystem.
 In addition, voltage test points are provided near each jumper, enabling accurate power and voltage measurements during debugging.
 
-For the connection between the LoRa module and the antenna, the characteristic impedance of the PCB trace does not need to be matched, as the trace length satisfies the condition l < $\frac{\lambda}{10}$.
+For the connection between the LoRa module and the antenna, 
+the characteristic impedance of the PCB trace does not need to be matched,
+ as the trace length satisfies the condition l < $\frac{\lambda}{10}$.
 
 \subsection{Power supply}
 
@@ -58,9 +61,10 @@ For the connection between the LoRa module and the antenna, the characteristic i
 %Deze modus noemt AEE (Automatic Efficiency  Enhancement) en zorgt onder andere voor een hoge
 % efficientie bij hele kleine duty cycles wat handig is bij een laag stroomverbruik.
 
-The power supply uses two buck converters to step down the 12V input to 5V and 3.3V, based on the TPS629203.
- This converter supports input voltages up to 17V and delivers up to 300mA of output current [5].
- Thanks to its high switching frequency, it achieves excellent efficiency, which is further optimized by dynamically adjusting both the switching frequency and mode depending on the load. It operates in either PWM (Pulse Width Modulation) or PFM (Pulse Frequency Modulation), depending on the current demand. This feature, known as Automatic Efficiency Enhancement (AEE), maintains high efficiency even at very low duty cycles, making it particularly suitable for low-power applications.\\
+The power supply uses two buck converters to step down the 12 VC input to 5 V and 3.3 V, based on the TPS629203. 
+This converter supports input voltages up to 17 V and delivers up to 300 mA of output current [5].
+Thanks to its high switching frequency, it achieves excellent efficiency, which is further enhanced by dynamically adjusting both the switching frequency and operating mode according to the load.
+It operates in either pulse-width modulation (PWM) or pulse-frequency modulation (PFM), depending on the current demand. This feature, known as Automatic Efficiency Enhancement (AEE), maintains high efficiency even at very low duty cycles, making the device particularly suitable for low-power applications.
 
 \subsection{Microcontroller}
 
@@ -79,7 +83,7 @@ The STM32U5 microcontroller was selected for this design. This latest generation
 Despite its low power profile, certain variants offer up to 4 MB of Flash memory and 3 MB of SRAM, enabling complex processing and data storage [1].
 The microcontroller supports multiple low-power modes, allowing it to significantly reduce power consumption during periods of inactivity, such as while waiting to send or receive messages.
 Wake-up from these modes is achieved using Low-Power General-Purpose Input/Output (LPGPIO) pins.
-In this setup, an LPGPIO pin is connected to both the LoRa module and a digital input. This configuration enables the microcontroller to wake up upon receiving incoming LoRa data or when the talk butto connected to the digital input is pressed.
+In this setup, an LPGPIO pin is connected to both the LoRa module and a digital input. This configuration enables the microcontroller to wake up upon receiving incoming LoRa data or when the talk button connected to the digital input is pressed.
 
 \subsection{LoRa}
 
@@ -117,7 +121,7 @@ This integrated circuit was selected based on its availability and ease of solde
 Audio input to the ADC is supplied by a microphone. 
 The microphone signal is amplified and filtered using an operational amplifier (op-amp) circuit powered by a DC supply.
 To change the sensitivity the volume can be adjusted with a potentiometer.
-This amplifier design is based on a reference schematic provided by Texas Instruments [8]. 
+This amplifier is based on a reference schematic provided by Texas Instruments [8]. 
 
 
 \subsection{DAC}
