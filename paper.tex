@@ -61,6 +61,10 @@
 % HYPERREF (optional)
 % ------------------------------------------------------------
 \usepackage[hidelinks]{hyperref}
+\usepackage[
+  separate-uncertainty = true,
+  multi-part-units = repeat
+]{siunitx}
 
 % ------------------------------------------------------------
 % TITLE BLOCK
@@ -113,7 +117,7 @@ Summary of the research and conclusion, Problem, method, results, conclusion....
 \section{Introduction}
 In hydrogen-powerd endurance racing, uninterupted telmetry and communication between the pitwall and the car are essential for both competitive performance and for driver safety. As systems could fail due to multiple reasons, and cause a loss of communication costing laps or even endager lives, a dedicated low-power backup is required. This paper therefore proposes a long-range wireless solution capable of transmitting and receiving both critiacal sensor data and messages to the driver over distances up to 2km (the approximate diameter of the Le Mans circuit) while only consuming a few milliwatts. By combining a encrypted LoRa-based RF link with embedded speech synthesis and WAV playback on an ultra-low-power STM32U5 microcontroller, our design ensures that even in the event of primary-system failure, the pit-crew retains awareness of the car's most critical data and issue instructions to the driver.
 
-\section{Overall system design}
+%\section{Overall system design}
 
 
 \input{chapters/firmware}
@@ -148,18 +152,48 @@ range limited to 440m ?
 
 \subsubsection{LoRa power consumption}
 
-\begin{tabular}{|c|c||c|}
-  \hline
-  \textbf{idle} & \textbf{receiving} & \textbf{sending} \\
-  \hline
-  5.8 mW & 38.3 mW & 382 mW \\
-  \hline
-\end{tabular} \\
+Power consumption was measured during transmission at maximum output power.  
+For comparison, NB-IoT, a wireless protocol with similar range, is considered.  
+LoRa shows significantly lower power consumption than NB-IoT.  
+External data indicate that NB-IoT consumes about 65\% more energy than LoRa~\cite{Lora-nbiot_paper}.  
 
-The data was measured while transmitting at maximum output power.
-This power consumption is compared to NB-IoT, another widely used wireless protocol with a similar communication range.
-LoRa demonstrates significantly lower power consumption compared to NB-IoT.
-According to external data, NB-IoT consumes approximately 65\% more energy than LoRa [10].
+The measured power consumption of the LoRa device is shown in Table~\ref{tab:power_consumption}.
+
+\begin{table}[h]
+  \centering
+  \caption{Power consumption in different states}
+\label{tab:power_consumption}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{idle} & \textbf{receiving} & \textbf{sending} \\
+    \hline
+    5.8 mW & 38.3 mW & 382 mW \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsubsection{Power supply efficiency}
+
+Due to testing issues and time constraints, it was not possible to measure the efficiency of the buck converter.
+Therefore, only data provided by the manufacturer can be referenced. These values are listed in Table~\ref{tab:power_suply_table}~\cite{TPS629203}.
+
+\begin{table}[h]
+  \centering
+  \caption{Efficiency based on current consumption}
+ \label{tab:power_suply_table}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{0.1 mA} & \textbf{1 mA} & \textbf{10 mA} \\
+    \hline
+    75\% & 87\% & 89\% \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsubsection{Audio power consumption}
+
+lorem dat niet werkt
+
 
 \section{Conclusion}
 

@@ -98,8 +98,7 @@ In this setup, an LPGPIO pin is connected to both the LoRa module and a digital 
 %Hierbij is het mogelijk om een antenne met $\frac{\lambda}{2}$ of $\frac{\lambda}{4}$ te gebruiken.
 %Indien een antenne voor $\frac{\lambda}{2}$ gebruikt wordt kan deze via een kabel op een andere plaats gebruikt worden.
 
-For wireless communication, LoRa was selected. This technology serves as the physical layer for the more well-known LoRaWAN protocol.
-The chosen module, the RFM96W by HopeRF [6], is readily available and supported by numerous examples and open-source libraries online, making integration and development straightforward.
+For wireless communication over distances exceeding 2 km, three primary options were considered: LoRa, NB-IoT, and Sigfox. LoRa was selected due to its independence from public infrastructure, which may not always be available or reliable. This technology functions as the physical layer for the widely adopted LoRaWAN protocol. The selected transceiver module, the RFM96W by HopeRF [6], is readily available and well-supported by a broad range of example implementations and open-source libraries, facilitating straightforward integration and development.
 This compact PCB can be hand-soldered and includes all the necessary hardware for LoRa communication, except for the antenna.
 Communication with the module is established via the SPI bus and GPIO pins.
 Data to be transmitted is sent to the module via the SPI interface, while incoming data is signaled through a dedicated I/O pin.
