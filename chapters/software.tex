@@ -20,6 +20,7 @@ long-range transceiver that operates in the 868\,MHz frequency band.
 The LoRa communication layer ensures that the backend can send and receive messages over the LoRa network.
 Before communication can be established, the interface with the LoRa chip on the shield must be properly configured.
 
+\vspace{0.5em}
 \textbf{SPI Initialization:}
 
 \begin{enumerate}
@@ -45,6 +46,7 @@ thread—an essential feature for real-time LoRa communication.
 A corresponding socket is also implemented in the Flutter application, enabling the frontend to interact with the backend seamlessly 
 and without interrupting its main execution thread.
 
+\vspace{0.5em}
 \textbf{Receiving LoRa Packets from the Firmware:} \\
 When a LoRa packet is received from the firmware, the backend handles it using the following sequence:
 
