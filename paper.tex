@@ -207,6 +207,19 @@ moet nog gemeten worden
 
 \section{Conclusion}
 
+This paper presents a low-energy backup communication system designed for a hydrogen-powered racecar. The system integrates LoRa wireless communication with embedded speech synthesis 
+and WAV audio playback, implemented on a STM32U5 microcontroller. 
+It enables reliable two-way communication between the racecar and the pit team, with data secured using AES-128 encryption.
+
+Testing demonstrated that the firmware achieves a power consumption as low as 5.8\,mW in idle mode, 38.3\,mW during reception, and 382\,mW during transmission. 
+The current implementation supports a communication range of up to 440\,m, which is suitable for small-scale race tracks. 
+However, this range would be insufficient for larger circuits such as Le Mans. Future work should focus on optimizing antenna design and adjusting LoRa parameters to 
+extend the communication range.
+
+Moreover, improvements to the speech synthesis quality are recommended to reduce reliance on memory-intensive WAV files, thereby conserving firmware storage space.
+
+Despite current limitations, the system demonstrates a reliable, encrypted, and energy-efficient fallback communication solution tailored for hydrogen-powered racecars.
+
 \section*{Acknowledgment}
 The authors would like to thank the supervising professors for their guidance throughout the development of this project. Special thanks go to the Hydro Team KU Leuven for providing valuable context and support related to the vehicle's communication needs. 
 
