@@ -122,7 +122,11 @@ It provides a reliable, encrypted, and energy-efficient fallback, with future wo
 \keywords{Low power, Long-range wireless, Embedded systems}
 
 \section{Introduction}
-In hydrogen-powerd endurance racing, uninterupted telmetry and communication between the pitwall and the car are essential for both competitive performance and for driver safety. As systems could fail due to multiple reasons, and cause a loss of communication costing laps or even endager lives, a dedicated low-power backup is required. This paper therefore proposes a long-range wireless solution capable of transmitting and receiving both critiacal sensor data and messages to the driver over distances up to 2km (the approximate diameter of the Le Mans circuit) while only consuming a few milliwatts. By combining a encrypted LoRa-based RF link with embedded speech synthesis and WAV playback on an ultra-low-power STM32U5 microcontroller, our design ensures that even in the event of primary-system failure, the pit-crew retains awareness of the car's most critical data and issue instructions to the driver.
+In hydrogen-powered endurance racing, uninterrupted telemetry and communication between the pitwall and the car are essential for both competitive performance and for driver safety. 
+As systems could fail due to multiple reasons, and cause a loss of communication costing laps or even endanger lives, a dedicated low-power backup is required.
+ This paper therefore proposes a long-range wireless solution capable of transmitting and receiving both critical sensor data and messages to the driver over distances up to 2km (the approximate diameter of the Le Mans circuit) while only consuming a few milliwatts.
+ By combining an encrypted LoRa-based RF link with embedded speech synthesis and WAV playback on an ultra-low-power STM32U5 microcontroller, 
+our design ensures that even in the event of primary-system failure, the pitcrew retains awareness of the car's most critical data and issue instructions to the driver.
 
 %\section{Overall system design}
 
@@ -134,7 +138,7 @@ In hydrogen-powerd endurance racing, uninterupted telmetry and communication bet
 \section{Testing}
 
 \subsection{Test Setup}
-The system was evaluated primarily in a laboratory environment. Key aspects such as power consumption, LoRa communication integrity, and audio output functionality were tested. Most tests were conducted manually, involving the transmission of periodic test messages and monitoring system responses via serial output and audio feedback. Power draw was observed using an inline current measurement tool, and LoRa transmissions were validated using logic analyzers and debug logs.
+The system was evaluated primarily in a laboratory environment. Key aspects such as power consumption, LoRa communication integrity, and audio output functionality were tested. Most tests were conducted manually, involving the transmission of periodic test messages and monitoring system responses via serial output and audio feedback. Power consumption was observed using an inline current measurement tool, and LoRa transmissions were validated using logic analyzers and debug logs.
 
 \subsection{Communication Testing}
 To verify LoRa communication, encrypted packets were periodically transmitted and received between two system nodes. Tests confirmed successful decryption, CRC validation, and end-to-end data integrity.
@@ -143,6 +147,12 @@ To verify LoRa communication, encrypted packets were periodically transmitted an
 WAV file playback was validated by connecting the system's analog output to external speakers and assessing the clarity of preloaded audio samples. Speech synthesis was tested by transmitting predefined sentences to the device and evaluating intelligibility through blind listening tests. Testers rated intelligibility qualitatively. While overall clarity was sufficient for basic commands, future improvements may include tuning output filters and optimizing speech synthesis parameters for better naturalness.
 
 \subsection{Audio Input Testing}
+
+The audio input was tested in two stages: the amplifier and the ADC.
+An oscilloscope was used to verify that the microphone signal was correctly amplified.
+This amplified signal was then routed to the ADC, where oscilloscope measurements confirmed that all I²S signals were correctly generated and output.
+Due to the incomplete development of the AI responsible for interpreting the audio, this functionality was not tested on the microcontroller itself.
+
 
 \subsection{Power measuring}
 
@@ -153,9 +163,9 @@ These measurements confirmed the correct operation of the I²S interface.
 
 \subsection{LoRa on PCB}
 
-The range limit was measured/estimated in an urban environment with the Raspberry Pi positioned at a height of 1 meter, encoutering a gew obstacles along the path. Continuous ping messages where sent at a fixed 1.5-second interval. A mobile phone maintained a SSH connetion to the Pi to monitor incoming responses. While riding a bicycle, the reception of these messages was tracked. When the signal was lost, Google Maps was used to estimate the distance from the Raspberry Pi. 
+The range limit was measured/estimated in an urban environment with the Raspberry Pi positioned at a height of 1 meter, encoutering a few obstacles along the path. Continuous ping messages were sent at a fixed 1.5-second interval. A mobile phone maintained a SSH connection to the Pi to monitor incoming responses. While riding a bicycle, the reception of these messages was tracked. When the signal was lost, Google Maps was used to estimate the distance from the Raspberry Pi. 
 
-These test were conducted on a parially cloudy dat at a temperature of 20°C. Consistent message reception was achieved up to a distance of approximatly 440 meters.
+These test were conducted on a parially cloudy data at a temperature of 20°C. Consistent message reception was achieved up to a distance of approximately 440 meters.
 
 \subsection{Power measurement}
 
